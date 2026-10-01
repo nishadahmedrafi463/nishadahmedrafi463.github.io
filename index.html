@@ -1,191 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Personal portfolio of Nishad Ahmed Rafi - Student, Python and HTML learner, and future programmer.">
-    <title>Nishad Ahmed Rafi | Personal Website</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rafi Zone — Nishad Ahmed Rafi</title>
+<meta name="description" content="Rafi Zone — Create. Play. Discover.">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="bg-orb orb1"></div><div class="bg-orb orb2"></div>
 
-    <header class="navbar">
-        <a href="#home" class="logo">NAR<span>.</span></a>
+<header class="topbar">
+  <a class="brand" href="#home">RAFI<span>ZONE</span></a>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <nav id="nav">
+    <a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a>
+    <a href="#projects">Projects</a><a href="#games">Games</a><a href="#tools">Tools</a>
+    <a href="#learning">Learning</a><a href="#blog">Blog</a><a href="#gallery">Gallery</a>
+    <a href="#music">Music</a><a href="#journey">Journey</a><a href="#account">Account</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
 
-        <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+<main>
+<section id="home" class="hero section">
+  <div class="hero-copy">
+    <p class="eyebrow">WELCOME TO RAFI ZONE</p>
+    <h1>Hi, I'm <span>Nishad Ahmed Rafi</span></h1>
+    <h2>Create. Play. Discover.</h2>
+    <p class="lead">A student, beginner programmer and creator from Kishoreganj, Bangladesh.</p>
+    <div class="actions"><a class="btn primary" href="#projects">Explore Projects</a><a class="btn ghost" href="#games">Play Games</a></div>
+    <div class="stats"><div><b id="levelText">Lv 1</b><small>Player Level</small></div><div><b id="xpText">0 XP</b><small>Experience</small></div><div><b>2027</b><small>SSC Batch</small></div></div>
+  </div>
+  <div class="hero-card">
+    <div class="avatar"><img src="images/profile.png" alt="Nishad Ahmed Rafi" onerror="this.style.display='none';this.parentElement.classList.add('noimg')"></div>
+    <h3>Rafi</h3><p>Future Programmer</p><div class="mini-bar"><i id="xpBar"></i></div><small>Keep learning • Keep creating</small>
+  </div>
+</section>
 
-        <nav id="navMenu">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#hobbies">Hobbies</a>
-            <a href="#goal">Goal</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
+<section id="about" class="section">
+  <div class="section-head"><p class="eyebrow">ABOUT</p><h2>Who is Rafi?</h2></div>
+  <div class="grid two"><article class="card"><h3>👋 A little about me</h3><p>I'm Nishad Ahmed Rafi, a student and SSC candidate from Kishoreganj. I enjoy coding, technology, photography, nature and creating small digital projects.</p><p>My current goal is simple: learn programming step by step and become a programmer.</p></article><article class="card info"><p><b>📍 Location</b>Kishoreganj, Dhaka, Bangladesh</p><p><b>🎓 Status</b>Student • SSC Batch 2027</p><p><b>🎯 Goal</b>Programmer</p><p><b>💡 Motto</b>Create. Play. Discover.</p></article></div>
+</section>
 
-    <main>
-        <!-- HOME -->
-        <section id="home" class="hero section">
-            <div class="hero-text reveal">
-                <p class="eyebrow">STUDENT • CREATOR • FUTURE PROGRAMMER</p>
-                <h1>Nishad Ahmed <span>Rafi</span></h1>
-                <h2>Learning Today, Building Tomorrow.</h2>
-                <p class="hero-description">
-                    A student from Kishoreganj, Bangladesh, learning Python and HTML
-                    and turning ideas into creative digital projects.
-                </p>
+<section id="skills" class="section">
+<div class="section-head"><p class="eyebrow">SKILLS</p><h2>What I'm learning</h2></div>
+<div class="grid cards5">
+  <div class="card skill"><b>Python</b><small>Learning</small><div class="progress"><i style="width:45%"></i></div></div>
+  <div class="card skill"><b>HTML</b><small>Learning</small><div class="progress"><i style="width:55%"></i></div></div>
+  <div class="card skill"><b>Git/GitHub</b><small>Learning</small><div class="progress"><i style="width:35%"></i></div></div>
+  <div class="card skill"><b>Video Editing</b><small>Learning</small><div class="progress"><i style="width:30%"></i></div></div>
+  <div class="card skill"><b>Photography</b><small>Learning</small><div class="progress"><i style="width:40%"></i></div></div>
+</div></section>
 
-                <div class="buttons">
-                    <a href="#projects" class="btn primary">View My Projects</a>
-                    <a href="#contact" class="btn secondary">Contact Me</a>
-                </div>
-            </div>
+<section id="projects" class="section">
+<div class="section-head"><p class="eyebrow">PROJECTS</p><h2>Things I've built</h2></div>
+<div class="grid cards3">
+  <article class="card project"><span>🤖</span><h3>Mini AI Chatbot</h3><p>My beginner Python chatbot with Bangla, Banglish and English responses.</p><button class="smallbtn" onclick="addXP(20)">+20 XP</button></article>
+  <article class="card project"><span>🎂</span><h3>Birthday Video Maker</h3><p>A Python project for making personalized birthday videos.</p><button class="smallbtn" onclick="addXP(20)">+20 XP</button></article>
+  <article class="card project"><span>🧮</span><h3>Calculator</h3><p>A simple beginner-friendly programming project.</p><button class="smallbtn" onclick="addXP(20)">+20 XP</button></article>
+</div></section>
 
-            <div class="hero-photo reveal">
-                <div class="photo-glow"></div>
-                <img src="images/profile.jpg" alt="Profile photo of Nishad Ahmed Rafi">
-            </div>
-        </section>
+<section id="games" class="section">
+<div class="section-head"><p class="eyebrow">GAME ZONE</p><h2>Play & earn XP</h2></div>
+<div class="grid cards3">
+  <article class="game card"><h3>✊ Rock Paper Scissors</h3><div class="rps"><button onclick="rps('rock')">✊</button><button onclick="rps('paper')">✋</button><button onclick="rps('scissors')">✌️</button></div><p id="rpsResult">Choose one.</p></article>
+  <article class="game card"><h3>🎲 Dice</h3><button class="bigbtn" onclick="rollDice()">ROLL</button><div id="diceResult" class="result">🎲</div></article>
+  <article class="game card"><h3>🪙 Coin Toss</h3><button class="bigbtn" onclick="coinToss()">TOSS</button><div id="coinResult" class="result">🪙</div></article>
+  <article class="game card"><h3>🔢 Number Guessing</h3><input id="guessInput" type="number" min="1" max="10" placeholder="1-10"><button class="smallbtn" onclick="guessNumber()">Guess</button><p id="guessResult">I'm thinking of 1–10.</p></article>
+  <article class="game card"><h3>⚡ Reaction Game</h3><button id="reaction" class="reaction" onclick="reactionClick()">Wait...</button><p id="reactionResult">Start when it says GO.</p></article>
+  <article class="game card"><h3>🧠 Quick Quiz</h3><p id="quizQ">Which language are you learning?</p><button class="quizOpt" onclick="quizAnswer('Python')">Python</button><button class="quizOpt" onclick="quizAnswer('Java')">Java</button><p id="quizResult"></p></article>
+</div>
+<div class="grid cards3 advanced-games">
+<article class="game card"><h3>❌⭕ Tic Tac Toe</h3><div id="tttBoard" class="ttt-board"></div><p id="tttStatus">Your turn: X</p><button class="smallbtn" onclick="resetTTT()">New Game</button></article>
+<article class="game card"><h3>🐍 Snake</h3><canvas id="snakeCanvas" width="300" height="300"></canvas><p id="snakeStatus">Press Start and use Arrow Keys.</p><button class="smallbtn" onclick="startSnake()">Start Snake</button></article>
+<article class="game card"><h3>🧠 Memory Game</h3><div id="memoryBoard" class="memory-board"></div><p id="memoryStatus">Find all matching pairs.</p><button class="smallbtn" onclick="resetMemory()">New Game</button></article>
+<article class="game card"><h3>⌨️ Typing Game</h3><p id="typingWord" class="typing-word">Press Start</p><input id="typingInput" placeholder="Type the word here" disabled><button class="smallbtn" onclick="startTyping()">Start</button><p id="typingStatus">30 seconds • score 0</p></article>
+<article class="game card"><h3>🟦 2048</h3><div id="game2048" class="grid2048"></div><p id="game2048Status">Use Arrow Keys or WASD.</p><button class="smallbtn" onclick="reset2048()">New Game</button></article>
+<article class="game card"><h3>🏆 Game XP</h3><p>Play any game to earn XP.</p><div class="big-xp" id="gameXP">0 XP</div><p>Saved in this browser.</p></article>
+</div>
+</section>
 
-        <!-- ABOUT -->
-        <section id="about" class="section">
-            <div class="section-heading reveal">
-                <p class="eyebrow">ABOUT ME</p>
-                <h2>Who I Am</h2>
-            </div>
+<section id="tools" class="section">
+<div class="section-head"><p class="eyebrow">TOOLBOX</p><h2>Useful mini tools</h2></div>
+<div class="grid cards3">
+  <article class="card tool"><h3>🧮 Calculator</h3><input id="calc" placeholder="e.g. 25*4+10"><button class="smallbtn" onclick="calculate()">Calculate</button><output id="calcOut">—</output></article>
+  <article class="card tool"><h3>🎂 Age Calculator</h3><input id="birth" type="date"><button class="smallbtn" onclick="ageCalc()">Calculate age</button><output id="ageOut">—</output></article>
+  <article class="card tool"><h3>🔤 Word Counter</h3><textarea id="wordText" placeholder="Write something..."></textarea><output id="wordOut">0 words • 0 characters</output></article>
+  <article class="card tool"><h3>🔢 BMI Calculator</h3><input id="height" type="number" placeholder="Height cm"><input id="weight" type="number" placeholder="Weight kg"><button class="smallbtn" onclick="bmiCalc()">Calculate</button><output id="bmiOut">—</output></article>
+  <article class="card tool"><h3>⏱️ Stopwatch</h3><div class="timer" id="stopwatch">00:00.0</div><button class="smallbtn" onclick="startStopwatch()">Start</button><button class="smallbtn" onclick="stopStopwatch()">Stop</button><button class="smallbtn" onclick="resetStopwatch()">Reset</button></article>
+  <article class="card tool"><h3>🔄 Unit Converter</h3><input id="km" type="number" placeholder="Kilometers"><button class="smallbtn" onclick="convertKm()">Convert to miles</button><output id="kmOut">—</output></article>
+  <article class="card tool"><h3>🔢 Character Counter</h3><textarea id="charText" placeholder="Type here..."></textarea><output id="charOut">0 characters</output></article>
+  <article class="card tool"><h3>🎨 Color Picker</h3><input id="color" type="color" value="#9b5cff" oninput="colorPick()"><output id="colorOut">#9b5cff</output></article>
+  <article class="card tool"><h3>🔐 Password Generator</h3><button class="smallbtn" onclick="makePassword()">Generate</button><output id="passOut">—</output></article>
+  <article class="card tool"><h3>🧾 JSON Formatter</h3><textarea id="jsonText" placeholder='{"name":"Rafi"}'></textarea><button class="smallbtn" onclick="formatJSON()">Format</button><output id="jsonOut">—</output></article>
+  <article class="card tool"><h3>📝 Markdown Preview</h3><textarea id="mdText" placeholder="# Hello Rafi"></textarea><output id="mdOut">Preview appears here</output></article>
+  <article class="card tool"><h3>📱 QR Generator</h3><input id="qrText" placeholder="Text or link"><button class="smallbtn" onclick="makeQR()">Generate QR</button><img id="qrImg" class="qr" alt="QR code"></article>
+</div></section>
 
-            <div class="about-card reveal">
-                <p>
-                    Hi, I'm <strong>Nishad Ahmed Rafi</strong>, a student from
-                    Kishoreganj, Bangladesh. I'm passionate about coding and
-                    currently learning Python and HTML to build creative projects.
-                </p>
-                <p>
-                    I enjoy exploring technology, video editing, photography,
-                    music, and nature. My goal is to become a skilled programmer
-                    and turn my ideas into something meaningful.
-                </p>
+<section id="learning" class="section">
+<div class="section-head"><p class="eyebrow">LEARNING CENTER</p><h2>Learn with Rafi</h2></div>
+<div class="grid cards3">
+<div class="card"><h3>🐍 Python</h3><p>Variables, input, conditions, loops, functions, lists and beginner projects.</p></div>
+<div class="card"><h3>🌐 HTML</h3><p>Page structure, headings, links, images, forms and semantic elements.</p></div>
+<div class="card"><h3>🎨 CSS</h3><p>Colors, spacing, layouts, responsive design and animations.</p></div>
+<div class="card"><h3>⚙️ JavaScript</h3><p>Variables, functions, DOM events and interactive websites.</p></div>
+<div class="card"><h3>🐙 Git/GitHub</h3><p>Repositories, commits, uploading files and GitHub Pages.</p></div>
+<div class="card"><h3>💻 Mini Challenges</h3><p>Small tasks to practice coding by building things.</p></div>
+</div></section>
 
-                <div class="info-grid">
-                    <div><span>📍 Location</span><strong>Kishoreganj, Dhaka, Bangladesh</strong></div>
-                    <div><span>🎓 Status</span><strong>Student</strong></div>
-                    <div><span>📚 SSC Batch</span><strong>2027</strong></div>
-                    <div><span>🎯 Goal</span><strong>Become a Programmer</strong></div>
-                </div>
-            </div>
-        </section>
+<section id="blog" class="section">
+<div class="section-head"><p class="eyebrow">BLOG</p><h2>Rafi's Notes</h2></div>
+<div class="grid cards3">
+<article class="card blog"><span>📸</span><h3>My Photography Journey</h3><p>Why I enjoy capturing nature and everyday moments.</p></article>
+<article class="card blog"><span>🌿</span><h3>Why I Love Nature</h3><p>Nature, music and creativity are a big part of my inspiration.</p></article>
+<article class="card blog"><span>💻</span><h3>Starting Coding</h3><p>My journey from beginner Python experiments to building websites.</p></article>
+</div></section>
 
-        <!-- SKILLS -->
-        <section id="skills" class="section">
-            <div class="section-heading reveal">
-                <p class="eyebrow">MY SKILLS</p>
-                <h2>What I Know</h2>
-            </div>
+<section id="gallery" class="section"><div class="section-head"><p class="eyebrow">GALLERY</p><h2>My visual world</h2></div><div class="gallery-placeholder card"><div>🖼️</div><h3>Gallery Coming Soon</h3><p>Add your nature and photography photos here later.</p></div></section>
 
-            <div class="cards two-cards">
-                <div class="skill-card reveal">
-                    <div class="icon">🐍</div>
-                    <h3>Python</h3>
-                    <p>Building beginner-friendly programs, games, automation ideas, and creative projects.</p>
-                </div>
+<section id="music" class="section"><div class="section-head"><p class="eyebrow">MUSIC</p><h2>Favourite songs</h2></div><div class="music-list"><div>🎵 <b>Neshar Bosha</b></div><div>🎵 <b>Prostab</b></div><div>🎵 <b>Moho</b></div></div></section>
 
-                <div class="skill-card reveal">
-                    <div class="icon">🌐</div>
-                    <h3>HTML</h3>
-                    <p>Creating the structure of websites and learning how modern web pages are built.</p>
-                </div>
-            </div>
-        </section>
+<section id="journey" class="section">
+<div class="section-head"><p class="eyebrow">MY JOURNEY</p><h2>One step at a time</h2></div>
+<div class="timeline">
+<div><b>2025</b><p>Started coding.</p></div><div><b>2026</b><p>Started Python.</p></div><div><b>2026</b><p>Started GitHub.</p></div><div><b>2026</b><p>Started building websites.</p></div><div><b>Future</b><p>Become a programmer.</p></div>
+</div></section>
 
-        <!-- PROJECTS -->
-        <section id="projects" class="section">
-            <div class="section-heading reveal">
-                <p class="eyebrow">MY WORK</p>
-                <h2>Projects</h2>
-            </div>
+<section id="account" class="section">
+<div class="section-head"><p class="eyebrow">ACCOUNT</p><h2>Player Profile</h2></div>
+<div class="grid two">
+<div class="card account"><div class="avatar small"><img src="images/profile.png" alt=""></div><h3 id="profileName">Rafi</h3><p>Level <b id="profileLevel">1</b> • <b id="profileXP">0</b> XP</p><input id="nameInput" placeholder="Change display name"><button class="smallbtn" onclick="saveName()">Save Name</button></div>
+<div class="card"><h3>🏆 Local Leaderboard</h3><p>Your browser's local score:</p><h2 id="leaderScore">0 XP</h2><small>Real shared leaderboard/login will need a backend.</small></div>
+</div></section>
 
-            <div class="cards project-grid">
-                <article class="project-card reveal">
-                    <span class="project-number">01</span>
-                    <h3>Mini AI Chatbot</h3>
-                    <p>A Python chatbot project with English, Banglish and Bangla-style interactions and mini games.</p>
-                    <span class="tag">Python</span>
-                </article>
+<section id="guestbook" class="section">
+<div class="section-head"><p class="eyebrow">COMMUNITY</p><h2>Guestbook</h2></div>
+<div class="card"><textarea id="guestText" placeholder="Write a message..."></textarea><button class="btn primary" onclick="addGuest()">Post</button><div id="guestList"></div></div>
+</section>
 
-                <article class="project-card reveal">
-                    <span class="project-number">02</span>
-                    <h3>Birthday Video Maker</h3>
-                    <p>A Python-based creative video project for making personalized birthday videos.</p>
-                    <span class="tag">Python • Video</span>
-                </article>
+<section id="favorites" class="section">
+<div class="section-head"><p class="eyebrow">FAVOURITES</p><h2>Things I like</h2></div>
+<div class="grid cards3"><div class="card"><b>🖤 Color</b><p>Black</p></div><div class="card"><b>🍦 Food</b><p>Ice-cream</p></div><div class="card"><b>🎮 Game</b><p>Free Fire</p></div><div class="card"><b>🎬 Movie/Series</b><p>Money Heist</p></div><div class="card"><b>📚 Book</b><p>Biology</p></div><div class="card"><b>⚽ Sport</b><p>Football</p></div></div>
+</section>
 
-                <article class="project-card reveal">
-                    <span class="project-number">03</span>
-                    <h3>Calculator</h3>
-                    <p>A simple calculator project created while learning programming fundamentals.</p>
-                    <span class="tag">Python</span>
-                </article>
-            </div>
-        </section>
+<section id="achievements" class="section"><div class="section-head"><p class="eyebrow">ACHIEVEMENTS</p><h2>Coming Soon</h2></div><div class="coming card">🏆 Your future achievements will appear here.</div></section>
 
-        <!-- HOBBIES -->
-        <section id="hobbies" class="section">
-            <div class="section-heading reveal">
-                <p class="eyebrow">BEYOND CODE</p>
-                <h2>My Hobbies</h2>
-            </div>
+<section id="contact" class="section">
+<div class="section-head"><p class="eyebrow">CONTACT</p><h2>Let's connect</h2></div>
+<div class="grid two">
+<div class="card"><h3>Find me online</h3><p>📧 nishadahmedrafi740@gmail.com</p><p>🐙 GitHub: nishadahmedrafi463</p><p><a href="https://www.facebook.com/share/p/1Jte9rZ9T9/" target="_blank">Facebook</a></p><p><a href="https://www.instagram.com/nisadahmedrafi" target="_blank">Instagram</a></p></div>
+<form class="card" onsubmit="sendMail(event)"><h3>📩 Contact Form</h3><input id="contactName" placeholder="Your name" required><input id="contactEmail" type="email" placeholder="Your email" required><textarea id="contactMsg" placeholder="Message" required></textarea><button class="btn primary">Send</button></form>
+</div></section>
+</main>
 
-            <div class="hobby-list reveal">
-                <div class="hobby">💻 <span>Coding</span></div>
-                <div class="hobby">🎬 <span>Video Editing</span></div>
-                <div class="hobby">📷 <span>Photography</span></div>
-                <div class="hobby">🎵 <span>Music</span></div>
-                <div class="hobby">🌿 <span>Nature</span></div>
-            </div>
-        </section>
-
-        <!-- GOAL -->
-        <section id="goal" class="section">
-            <div class="goal-card reveal">
-                <p class="eyebrow">MY GOAL</p>
-                <h2>Become a Programmer.</h2>
-                <p>
-                    My goal is to become a skilled programmer, continuously learn
-                    new technologies, and create useful and creative digital projects.
-                </p>
-                <div class="goal-line"></div>
-                <p class="quote">“Learning Today, Building Tomorrow.”</p>
-            </div>
-        </section>
-
-        <!-- CONTACT -->
-        <section id="contact" class="section">
-            <div class="section-heading reveal">
-                <p class="eyebrow">GET IN TOUCH</p>
-                <h2>Contact Me</h2>
-            </div>
-
-            <div class="contact-card reveal">
-                <p>If you'd like to connect with me, feel free to send me an email.</p>
-                <a class="email" href="mailto:nishadahmedrafi740@gmail.com">
-                    nishadahmedrafi740@gmail.com
-                </a>
-                <a class="btn primary" href="mailto:nishadahmedrafi740@gmail.com">Send Email</a>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>© <span id="year"></span> Nishad Ahmed Rafi. All rights reserved.</p>
-    </footer>
-
-    <script src="script.js"></script>
+<footer><b>RAFI<span>ZONE</span></b><p>© 2026 Nishad Ahmed Rafi • Create. Play. Discover.</p></footer>
+<script src="script.js"></script>
 </body>
 </html>
