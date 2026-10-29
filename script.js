@@ -89,7 +89,7 @@ photoGroups.forEach(group => {
   group.files.forEach((file,i) => {
     const card = container.querySelectorAll(".photo-card")[i];
     const img = new Image();
-    img.src = `assets/${file}`;
+    img.src = file;
     img.alt = group.captions[i];
     img.onload = () => {
       const ph = card.querySelector("[data-placeholder]");
@@ -98,7 +98,7 @@ photoGroups.forEach(group => {
     card.addEventListener("click", () => {
       const lightbox = document.getElementById("lightbox");
       const big = document.getElementById("lightboxImage");
-      big.src = `assets/${file}`;
+      big.src = file;
       big.alt = group.captions[i];
       document.getElementById("lightboxCaption").textContent = group.captions[i];
       lightbox.classList.remove("hidden");
