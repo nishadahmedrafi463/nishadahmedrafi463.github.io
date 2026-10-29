@@ -1,72 +1,234 @@
-let xp=Number(localStorage.getItem("rafi_xp")||0), level=Number(localStorage.getItem("rafi_level")||1);
-let secret=Math.floor(Math.random()*10)+1, reactionStart=0, reactionTimer=null, swTimer=null, swStart=0, swElapsed=0;
-function saveProgress(){localStorage.setItem("rafi_xp",xp);localStorage.setItem("rafi_level",level);updateXP()}
-function updateXP(){document.querySelectorAll("#xpText,#profileXP").forEach(e=>e.textContent=xp+" XP");document.querySelectorAll("#levelText,#profileLevel").forEach(e=>e.textContent="Lv "+level);document.getElementById("leaderScore").textContent=xp+" XP";if(document.getElementById("gameXP"))document.getElementById("gameXP").textContent=xp+" XP";document.getElementById("xpBar").style.width=(xp%100)+"%"}
-function addXP(n){xp+=n;while(xp>=level*100){xp-=level*100;level++;}saveProgress();alert("+"+n+" XP! Level "+level)}
-function toggleMenu(){let n=document.getElementById("nav");n.style.display=n.style.display==="flex"?"none":"flex"}
-function rps(p){let a=["rock","paper","scissors"],c=a[Math.floor(Math.random()*3)],win=p===c?"Draw!":(p==="rock"&&c==="scissors")||(p==="paper"&&c==="rock")||(p==="scissors"&&c==="paper")?"You win! +10 XP":"Computer wins.";document.getElementById("rpsResult").textContent="You: "+p+" • Computer: "+c+" • "+win;if(win.includes("win"))addXP(10)}
-function rollDice(){let n=Math.floor(Math.random()*6)+1;document.getElementById("diceResult").textContent=["⚀","⚁","⚂","⚃","⚄","⚅"][n-1];addXP(5)}
-function coinToss(){let x=Math.random()<.5?"HEADS":"TAILS";document.getElementById("coinResult").textContent=x==="HEADS"?"🙂 HEADS":"🙂 TAILS";addXP(5)}
-function guessNumber(){let g=Number(document.getElementById("guessInput").value),r=document.getElementById("guessResult");if(g===secret){r.textContent="Correct! +20 XP 🎉";addXP(20);secret=Math.floor(Math.random()*10)+1}else r.textContent=g>secret?"Too high!":"Too low!"}
-function reactionClick(){let b=document.getElementById("reaction"),r=document.getElementById("reactionResult");if(b.dataset.ready==="1"){let ms=Date.now()-reactionStart;r.textContent=ms+" ms!";addXP(10);b.dataset.ready="0";b.textContent="Wait...";clearTimeout(reactionTimer);reactionTimer=setTimeout(reactionStartGame,1000+Math.random()*2500)}}
-function reactionStartGame(){let b=document.getElementById("reaction");b.dataset.ready="1";b.textContent="GO!";reactionStart=Date.now()}
-setTimeout(reactionStartGame,1800)
-function quizAnswer(a){let r=document.getElementById("quizResult");if(a==="Python"){r.textContent="Correct! +10 XP";addXP(10)}else r.textContent="Not this time."}
-function calculate(){try{let s=document.getElementById("calc").value.replace(/[^0-9+\-*/().% ]/g,"");document.getElementById("calcOut").textContent=String(Function("return "+s)())}catch(e){document.getElementById("calcOut").textContent="Invalid calculation"}}
-function ageCalc(){let d=new Date(document.getElementById("birth").value);if(!isNaN(d)){let n=new Date(),a=n.getFullYear()-d.getFullYear();if(n<new Date(n.getFullYear(),d.getMonth(),d.getDate()))a--;document.getElementById("ageOut").textContent=a+" years old"}}
-document.getElementById("wordText").addEventListener("input",e=>{let t=e.target.value.trim();document.getElementById("wordOut").textContent=(t?t.split(/\s+/).length:0)+" words • "+e.target.value.length+" characters"})
-function bmiCalc(){let h=Number(document.getElementById("height").value)/100,w=Number(document.getElementById("weight").value);if(h>0&&w>0)document.getElementById("bmiOut").textContent="BMI: "+(w/(h*h)).toFixed(1)}
-function convertKm(){let n=Number(document.getElementById("km").value);document.getElementById("kmOut").textContent=isFinite(n)?(n*.621371).toFixed(3)+" miles":"—"}
-document.getElementById("charText").addEventListener("input",e=>document.getElementById("charOut").textContent=e.target.value.length+" characters")
-function colorPick(){document.getElementById("colorOut").textContent=document.getElementById("color").value}
-function makePassword(){let chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%";let s="";for(let i=0;i<14;i++)s+=chars[Math.floor(Math.random()*chars.length)];document.getElementById("passOut").textContent=s}
-function formatJSON(){try{let o=JSON.parse(document.getElementById("jsonText").value);document.getElementById("jsonOut").textContent=JSON.stringify(o,null,2)}catch(e){document.getElementById("jsonOut").textContent="Invalid JSON"}}
-document.getElementById("mdText").addEventListener("input",e=>{let s=e.target.value.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/^# (.*)$/gm,"<h3>$1</h3>").replace(/\*\*(.*?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>");document.getElementById("mdOut").innerHTML=s})
-function makeQR(){let t=encodeURIComponent(document.getElementById("qrText").value);if(t)document.getElementById("qrImg").src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data="+t}
-let swRunning=false;
-function renderSW(){let x=swElapsed+(swRunning?Date.now()-swStart:0),m=Math.floor(x/60000),s=Math.floor(x/1000)%60,ms=Math.floor(x%1000/100);document.getElementById("stopwatch").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")+"."+ms}
-function startStopwatch(){if(!swRunning){swRunning=true;swStart=Date.now();swTimer=setInterval(renderSW,100)}}
-function stopStopwatch(){if(swRunning){swElapsed+=Date.now()-swStart;swRunning=false;clearInterval(swTimer);renderSW()}}
-function resetStopwatch(){swRunning=false;swElapsed=0;clearInterval(swTimer);renderSW()}
-function saveName(){let n=document.getElementById("nameInput").value.trim();if(n){localStorage.setItem("rafi_name",n);document.getElementById("profileName").textContent=n}}
-function addGuest(){let t=document.getElementById("guestText").value.trim();if(!t)return;let arr=JSON.parse(localStorage.getItem("rafi_guest")||"[]");arr.unshift({text:t,date:new Date().toLocaleString()});localStorage.setItem("rafi_guest",JSON.stringify(arr));document.getElementById("guestText").value="";renderGuests()}
-function renderGuests(){let arr=JSON.parse(localStorage.getItem("rafi_guest")||"[]"),box=document.getElementById("guestList");box.innerHTML=arr.map(x=>"<div class='guest'><b>Guest</b><small> • "+x.date+"</small><p>"+String(x.text).replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]))+"</p></div>").join("")}
-function sendMail(e){e.preventDefault();let n=encodeURIComponent(document.getElementById("contactName").value),m=encodeURIComponent(document.getElementById("contactMsg").value);location.href="mailto:nishadahmedrafi740@gmail.com?subject=Rafi Zone message from "+n+"&body="+m}
+// Rafu & Tonu — সহজে বদলানো যায় এমন JavaScript
+// পাসওয়ার্ড বদলাতে নিচের PASSWORD-এর মান পরিবর্তন কর।
+const PASSWORD = "Puchkii";
 
-/* === FULL PLAYABLE GAMES === */
-let ttt=["","","","","","","","",""],tttOver=false;
-const tttWins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-function drawTTT(){document.getElementById("tttBoard").innerHTML=ttt.map((v,i)=>`<button class="ttt-cell" onclick="playTTT(${i})">${v}</button>`).join("")}
-function tttWinner(a){for(const w of tttWins)if(a[w[0]]&&a[w[0]]===a[w[1]]&&a[w[1]]===a[w[2]])return a[w[0]];return a.every(Boolean)?"draw":null}
-function playTTT(i){if(ttt[i]||tttOver)return;ttt[i]="X";drawTTT();let r=tttWinner(ttt);if(r){finishTTT(r);return}document.getElementById("tttStatus").textContent="Computer is thinking...";setTimeout(()=>{let c=[];for(let n=0;n<9;n++)if(!ttt[n])c.push(n);if(c.length)ttt[c[Math.floor(Math.random()*c.length)]]="O";drawTTT();r=tttWinner(ttt);if(r)finishTTT(r);else document.getElementById("tttStatus").textContent="Your turn: X"},300)}
-function finishTTT(r){tttOver=true;document.getElementById("tttStatus").textContent=r==="draw"?"Draw!":r==="X"?"You win! +20 XP":"Computer wins.";if(r==="X")addXP(20)}
-function resetTTT(){ttt=["","","","","","","","",""];tttOver=false;document.getElementById("tttStatus").textContent="Your turn: X";drawTTT()}
+const screens = [...document.querySelectorAll(".screen")];
+const nav = document.getElementById("mainNav");
+const pageCounter = document.getElementById("pageCounter");
+let historyStack = [];
+let currentScreen = "gate";
 
-let snake=[],snakeDir={x:1,y:0},snakeFood={},snakeRun=false,snakeLoop=null,snakeScore=0;const snakeCanvas=document.getElementById("snakeCanvas"),snakeCtx=snakeCanvas.getContext("2d");
-function snakeFoodNew(){do{snakeFood={x:Math.floor(Math.random()*15),y:Math.floor(Math.random()*15)}}while(snake.some(s=>s.x===snakeFood.x&&s.y===snakeFood.y))}
-function drawSnake(){snakeCtx.clearRect(0,0,300,300);snakeCtx.fillStyle="#9b5cff";snakeCtx.fillRect(snakeFood.x*20,snakeFood.y*20,18,18);snake.forEach((s,i)=>{snakeCtx.fillStyle=i?"#8b54d8":"#d7a7ff";snakeCtx.fillRect(s.x*20,s.y*20,18,18)})}
-function startSnake(){clearInterval(snakeLoop);snake=[{x:7,y:7},{x:6,y:7},{x:5,y:7}];snakeDir={x:1,y:0};snakeScore=0;snakeRun=true;snakeFoodNew();drawSnake();document.getElementById("snakeStatus").textContent="Score: 0";snakeLoop=setInterval(stepSnake,110)}
-function stepSnake(){let h={x:snake[0].x+snakeDir.x,y:snake[0].y+snakeDir.y};if(h.x<0||h.x>=15||h.y<0||h.y>=15||snake.some(s=>s.x===h.x&&s.y===h.y)){snakeRun=false;clearInterval(snakeLoop);document.getElementById("snakeStatus").textContent="Game over! Score: "+snakeScore;return}snake.unshift(h);if(h.x===snakeFood.x&&h.y===snakeFood.y){snakeScore++;snakeFoodNew();if(snakeScore%3===0)addXP(5)}else snake.pop();document.getElementById("snakeStatus").textContent="Score: "+snakeScore;drawSnake()}
-document.addEventListener("keydown",e=>{let d={ArrowUp:{x:0,y:-1},w:{x:0,y:-1},ArrowDown:{x:0,y:1},s:{x:0,y:1},ArrowLeft:{x:-1,y:0},a:{x:-1,y:0},ArrowRight:{x:1,y:0},d:{x:1,y:0}}[e.key];if(d&&snakeRun&&!(d.x===-snakeDir.x&&d.y===-snakeDir.y))snakeDir=d});
+const sectionNames = {
+  home:"হোম", story:"আমাদের গল্প", gallery:"ছবি", timeline:"টাইমলাইন",
+  letter:"গোপন চিঠি", messages:"Message Jar", comfort:"মন খারাপের সময়",
+  quiz:"কুইজ", fun:"Funny Corner", promise:"ছোট্ট প্রতিশ্রুতি",
+  birthday:"জন্মদিন", music:"আমাদের গান", countdownHeart:"হার্ট অ্যানিমেশন",
+  wish:"ভবিষ্যতের ইচ্ছা", gifts:"উপহারের বাক্স", surprise:"শেষ সারপ্রাইজ", moments:"স্মৃতির বাক্স", reasons:"তুই কেন স্পেশাল", dailyNote:"আজকের নোট", extra:"মনের ছোট্ট বাক্স"
+};
 
-let mem=[],openMem=[],memLock=false,memMatches=0;
-function resetMemory(){mem=["🍎","🍎","🚀","🚀","🐱","🐱","⚽","⚽","🎵","🎵","🌙","🌙","🔥","🔥","💻","💻"].sort(()=>Math.random()-.5);openMem=[];memLock=false;memMatches=0;renderMemory()}
-function renderMemory(){document.getElementById("memoryBoard").innerHTML=mem.map((v,i)=>`<button class="memory-card ${openMem.includes(i)?"flipped":""}" onclick="flipMemory(${i})">${openMem.includes(i)?v:"?"}</button>`).join("");document.getElementById("memoryStatus").textContent=`Matches: ${memMatches}/8`}
-function flipMemory(i){if(memLock||openMem.includes(i))return;openMem.push(i);renderMemory();if(openMem.length===2){memLock=true;let[a,b]=openMem;if(mem[a]===mem[b]){memMatches++;openMem=[];memLock=false;addXP(10);renderMemory();if(memMatches===8)document.getElementById("memoryStatus").textContent="You found all pairs! 🎉"}else setTimeout(()=>{openMem=[];memLock=false;renderMemory()},650)}}
+function showScreen(id, remember=true) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  if (remember && currentScreen !== id) historyStack.push(currentScreen);
+  screens.forEach(s => s.classList.toggle("active", s.id === id));
+  currentScreen = id;
+  pageCounter.textContent = sectionNames[id] || "তোর মতো করে ঘুরে দেখ 💗";
+  document.querySelectorAll("[data-go]").forEach(b => b.classList.toggle("active", b.dataset.go === id));
+  nav.classList.remove("open");
+  window.scrollTo({top:0, behavior:"smooth"});
+}
 
-let typingWords=["python","rafi","coding","github","website","programmer","nature","football","javascript","computer"],typingRunning=false,typingTime=30,typingScore=0,typingTimer,typingCurrent="";
-function startTyping(){clearInterval(typingTimer);typingRunning=true;typingTime=30;typingScore=0;nextTyping();let i=document.getElementById("typingInput");i.disabled=false;i.value="";i.focus();typingTimer=setInterval(()=>{typingTime--;document.getElementById("typingStatus").textContent=`Time: ${typingTime}s • Score: ${typingScore}`;if(typingTime<=0)endTyping()},1000)}
-function nextTyping(){typingCurrent=typingWords[Math.floor(Math.random()*typingWords.length)];document.getElementById("typingWord").textContent=typingCurrent}
-document.getElementById("typingInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&typingRunning&&e.target.value.trim().toLowerCase()===typingCurrent){typingScore++;if(typingScore%5===0)addXP(10);e.target.value="";nextTyping()}})
-function endTyping(){typingRunning=false;clearInterval(typingTimer);document.getElementById("typingInput").disabled=true;document.getElementById("typingStatus").textContent=`Time up! Score: ${typingScore}`}
+function unlock() {
+  const input = document.getElementById("passwordInput");
+  if (input.value.trim().toLowerCase() === PASSWORD.toLowerCase()) {
+    document.getElementById("gateError").textContent = "";
+    historyStack = [];
+    showScreen("home", false);
+  } else {
+    document.getElementById("gateError").textContent = "পাসওয়ার্ডটা মেলেনি—আবার চেষ্টা কর 💗";
+    input.focus();
+  }
+}
+document.getElementById("unlockBtn").addEventListener("click", unlock);
+document.getElementById("passwordInput").addEventListener("keydown", e => { if(e.key === "Enter") unlock(); });
+document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => showScreen(b.dataset.go)));
+document.querySelectorAll("[data-home]").forEach(b => b.addEventListener("click", e => {e.preventDefault(); showScreen("home");}));
+document.getElementById("homeBtn").addEventListener("click", () => showScreen("home"));
+document.getElementById("backBtn").addEventListener("click", () => {
+  let previous = historyStack.pop();
+  if (!previous || previous === "gate") previous = "home";
+  showScreen(previous, false);
+});
+document.getElementById("menuToggle").addEventListener("click", () => nav.classList.toggle("open"));
 
-let b2048=[];
-function tile2048(){let e=b2048.map((v,i)=>v?null:i).filter(v=>v!==null);if(e.length)b2048[e[Math.floor(Math.random()*e.length)]]=Math.random()<.9?2:4}
-function draw2048(){document.getElementById("game2048").innerHTML=b2048.map(v=>`<div class="tile2048">${v||""}</div>`).join("")}
-function slide2048(a){a=a.filter(Boolean);for(let i=0;i<a.length-1;i++)if(a[i]===a[i+1]){a[i]*=2;a.splice(i+1,1);addXP(1)}while(a.length<4)a.push(0);return a}
-function move2048(d){let old=b2048.join(),n=Array(16).fill(0);if(d==="left"||d==="right")for(let r=0;r<4;r++){let a=b2048.slice(r*4,r*4+4);if(d==="right")a.reverse();a=slide2048(a);if(d==="right")a.reverse();for(let c=0;c<4;c++)n[r*4+c]=a[c]}else for(let c=0;c<4;c++){let a=[b2048[c],b2048[c+4],b2048[c+8],b2048[c+12]];if(d==="down")a.reverse();a=slide2048(a);if(d==="down")a.reverse();for(let r=0;r<4;r++)n[r*4+c]=a[r]}b2048=n;if(old!==b2048.join())tile2048();draw2048()}
-function reset2048(){b2048=Array(16).fill(0);tile2048();tile2048();draw2048()}
-document.addEventListener("keydown",e=>{if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;let d={ArrowLeft:"left",a:"left",ArrowRight:"right",d:"right",ArrowUp:"up",w:"up",ArrowDown:"down",s:"down"}[e.key];if(d)move2048(d)})
-resetTTT();resetMemory();reset2048();drawSnake();
-let saved=localStorage.getItem("rafi_name");if(saved)document.getElementById("profileName").textContent=saved;
-updateXP();renderGuests();
+const tiles = [
+  ["📖","আমাদের গল্প","শুরু থেকে আবার ফিরে আসা","story"],
+  ["📸","ছবির অ্যালবাম","ছবি আর TikTok স্মৃতি","gallery"],
+  ["⏳","গল্পের দিনগুলো","বন্ধুত্বের টাইমলাইন","timeline"],
+  ["💌","গোপন চিঠি","তোর জন্য কিছু কথা","letter"],
+  ["🫙","Message Jar","একটা মেসেজ তুলে নে","messages"],
+  ["🌙","মুড কর্নার","আজ তোর মুড কেমন?","comfort"],
+  ["🧠","বন্ধুত্বের কুইজ","তুই আমাকে কতটা চিনিস?","quiz"],
+  ["😂","Funny Corner","মিম আর মজার কথা","fun"],
+  ["🤝","ছোট্ট প্রতিশ্রুতি","যত্ন আর বোঝাপড়া","promise"],
+  ["🎂","জন্মদিন","কাউন্টডাউন আর শুভেচ্ছা","birthday"],
+  ["🎧","আমাদের গান","পছন্দের গানগুলো","music"],
+  ["🎁","শেষ সারপ্রাইজ","একটা বিশেষ বার্তা","surprise"],
+  ["📸","স্মৃতির বাক্স","মনে পড়া মুহূর্ত","moments"],
+  ["🌸","তুই কেন স্পেশাল","মিষ্টি কিছু কথা","reasons"],
+  ["💌","আজকের নোট","নিজের যত্নের কথা","dailyNote"],
+  ["✨","মনের ছোট্ট বাক্স","মনে রাখার কথা","extra"]
+];
+document.getElementById("homeTiles").innerHTML = tiles.map(t =>
+  `<button class="tile" data-go="${t[3]}"><span class="tile-icon">${t[0]}</span><h3>${t[1]}</h3><p>${t[2]}</p></button>`
+).join("");
+document.querySelectorAll("#homeTiles [data-go]").forEach(b => b.addEventListener("click", () => showScreen(b.dataset.go)));
+
+const photoGroups = [
+  {id:"rafiGallery", files:["rafi1.jpg"], captions:["Rafu-এর ছবি 💗"]},
+  {id:"tonuGallery", files:["tonu1.jpg"], captions:["Tonu-এর ছবি 🫶"]},
+  {id:"tiktokGallery", files:["rafi-tiktok.jpg","tonu-tiktok.jpg","combined-tiktok.jpg"], captions:["Rafu-এর TikTok আইডি","Tonu-এর TikTok আইডি","আমাদের Combined TikTok 💞"]}
+];
+photoGroups.forEach(group => {
+  const container = document.getElementById(group.id);
+  container.innerHTML = group.files.map((file,i) => `
+    <button class="photo-card" data-file="${file}" data-caption="${group.captions[i]}">
+      <div class="placeholder" data-placeholder>♡</div>
+      <span>${group.captions[i]}</span>
+    </button>`).join("");
+  group.files.forEach((file,i) => {
+    const card = container.querySelectorAll(".photo-card")[i];
+    const img = new Image();
+    img.src = `assets/${file}`;
+    img.alt = group.captions[i];
+    img.onload = () => {
+      const ph = card.querySelector("[data-placeholder]");
+      if(ph) ph.replaceWith(img);
+    };
+    card.addEventListener("click", () => {
+      const lightbox = document.getElementById("lightbox");
+      const big = document.getElementById("lightboxImage");
+      big.src = `assets/${file}`;
+      big.alt = group.captions[i];
+      document.getElementById("lightboxCaption").textContent = group.captions[i];
+      lightbox.classList.remove("hidden");
+      big.onerror = () => { lightbox.classList.add("hidden"); alert("এই ছবিটি assets ফোল্ডারে যোগ করলেই দেখা যাবে: " + file); };
+    });
+  });
+});
+function closeLightbox(){document.getElementById("lightbox").classList.add("hidden");}
+document.getElementById("closeLightbox").addEventListener("click", closeLightbox);
+document.getElementById("lightbox").addEventListener("click", e => {if(e.target.id==="lightbox") closeLightbox();});
+document.addEventListener("keydown", e => {if(e.key==="Escape") closeLightbox();});
+
+const messages = [
+  "ময়না, নিজের যত্ন নিস—তোরও বিশ্রাম দরকার। 💗🌷", "পুচকি, তুই যেমন আছিস তেমনভাবেই মূল্যবান। 🫶🥹", "আজ একটু হাসিস—ছোট্ট হাসিও দিনটা সুন্দর করতে পারে। 😊💖", "মন খারাপ হলে একা সব সামলাতে হবে না; বিশ্বাসের কাউকে বলিস। 🌙💌", "আমাদের মিমগুলোর কথা মনে আছে? আবার একদিন হাসাহাসি করব! 😂💗", "ব্যস্ত থাকলে নিজের জন্যও একটু সময় রাখিস। ✨🌸", "আমাদের সুন্দর স্মৃতিগুলো যত্ন করে রাখিস। 💌🫶", "তোর স্বপ্নগুলো এক এক করে পূরণ হোক। 🎀🌟",
+  "তুই হাসলে আশেপাশের মুহূর্তগুলোও হালকা লাগে। 😊🌷", "সব সময় শক্ত থাকার দরকার নেই—বিশ্রামও জরুরি। 🫂💗", "নিজের অনুভূতিকে কখনো ছোট ভাবিস না। 🥹💌", "আজকের ছোট্ট ভালো লাগাটাও উদযাপন করিস। ✨💖", "একটা খারাপ দিন মানেই খারাপ জীবন নয়। 🌦️🌈", "তোর পছন্দের গান শুনে একটু আরাম করিস। 🎧💞", "বন্ধুত্ব মানে কথা, সম্মান আর বোঝাপড়া। 🤝💗", "নিজের গতিতে এগিয়ে যা—তাড়া নেই। 🌱✨",
+  "পুরোনো মজার স্মৃতি মনে করে একটু হাসিস। 😂📸", "তুই গুরুত্বপূর্ণ, তোর কথাও গুরুত্বপূর্ণ। 💌🥹", "আজ নিজের জন্য একটা ছোট্ট ভালো কাজ করিস। 🌷🫶", "তোর দিনটা শান্ত আর সুন্দর হোক। 🌙💖", "যা পারিস না, সেটা শেখার সময় নিজেকে সময় দিস। 🌱📚", "ভুল হলে শেখা যায়—নিজেকে দোষ দিয়ে আটকে থাকিস না। 💗✨", "একটু পানি খা, কাঁধটা ঢিলে কর, আর আরাম কর। 💧🌸", "স্মৃতির সব দিন নিখুঁত না হলেও কিছু মুহূর্ত খুব দামি। 📖💞",
+  "তোর নিজের স্বপ্নগুলোকে গুরুত্ব দিস। 🌟🫶", "যখন ইচ্ছে, নিজের মতো করে হাসিস। 😭💗", "চুপচাপ দিনেও তোর মূল্য কমে যায় না। 🌙💌", "একটা মিষ্টি গান আর একটু শান্তি—আজ এতটুকুই যথেষ্ট। 🎧🌷", "আমাদের গল্পে হাসি যেমন আছে, শেখার মুহূর্তও আছে। 📖💖", "কেউ ব্যস্ত থাকলে নিজের মনকেও যত্নে রাখিস। 🫶🌼", "নিজের সীমা আর অন্যের সীমা—দুটোকেই সম্মান করিস। 🤝💗", "আজকের জন্য তোর প্রতি একটুখানি মায়া রইল। 🥹💞",
+  "ছোট্ট অগ্রগতিও অগ্রগতি—নিজেকে বাহবা দিস। 🌱🎀", "তোর প্রিয় মানুষদের সঙ্গে সুন্দর কথা জমা করিস। 💌🌷", "মন খারাপ এলে ধীরে ধীরে সময় নে, তাড়া করিস না। 🌧️🫂", "তুই নিজের মতো করে সুন্দর একটা ভবিষ্যৎ গড়তে পারিস। ✨💖", "একটা হাসি, একটা গান, একটা বিরতি—নিজেকে একটু সময় দে। 🎧😊", "আমাদের কম্বাইন্ড অ্যাকাউন্টটাও ছোট্ট স্মৃতির অ্যালবাম। 📱💞", "নিজের প্রতি নরম হ—তুইও যত্ন পাওয়ার যোগ্য। 🫶🌸", "এই ছোট্ট মেসেজটা মনে করিয়ে দিক: ভালো থাকিস, পুচকি। 💗🥹"
+];
+document.getElementById("drawMessage").addEventListener("click", () => {
+  const last = document.getElementById("jarMessage").dataset.last;
+  let next = Math.floor(Math.random()*messages.length);
+  if(messages.length > 1 && String(next) === last) next = (next+1)%messages.length;
+  document.getElementById("jarMessage").dataset.last = next;
+  document.getElementById("jarMessage").textContent = messages[next];
+});
+
+const moodMessages = {
+  happy:"এই খুশিটা উপভোগ কর! আজকের সুন্দর মুহূর্তটা মনে রাখিস 😊💗",
+  sad:"পুচকি, মন খারাপ হওয়া স্বাভাবিক। একটু পানি খা, বিশ্রাম নে, আর চাইলে বিশ্বাসের কারও সঙ্গে কথা বলিস। তোর অনুভূতি গুরুত্বপূর্ণ। 🌙",
+  bored:"চল, একটা মিম দেখি বা পুরোনো কোনো মজার স্মৃতি মনে করি! 😂",
+  angry:"একটু থাম, ধীরে শ্বাস নে, তারপর শান্ত হলে কথা বলিস। তোর অনুভূতি বলা যায়—কিন্তু নিজের আর অন্যের প্রতি নরম থাকিস। 🌷"
+};
+document.querySelectorAll("[data-mood]").forEach(b => b.addEventListener("click", () => {
+  document.getElementById("moodMessage").textContent = moodMessages[b.dataset.mood];
+}));
+
+const quizData = [
+ ["Rafu-এর বন্ধুর ডাকনাম কী?",["Puchkii","Mishti","Jui"],0],
+ ["তোদের প্রথম পরিচয় কোথায়?",["Facebook page","Halal People WhatsApp group","স্কুলে"],1],
+ ["তোরা কোন গেম খেলতিস?",["Minecraft","Roblox","Free Fire"],2],
+ ["তনুর জন্মদিন কবে?",["২৮ মে","১৪ ফেব্রুয়ারি","১২ ডিসেম্বর"],0],
+ ["তোদের একসঙ্গে পোস্ট করার অ্যাকাউন্ট কোনটি?",["YouTube","Combined TikTok","Instagram"],1],
+ ["Rafu তনুকে কী নামে ডাকে?",["পুচকি","রানি সাহেবা","ম্যাডাম"],0],
+ ["তোদের প্রথম পরিচয়ের অ্যাপ কোনটি ছিল?",["WhatsApp","Telegram","Snapchat"],0],
+ ["প্রথম পরিচয়ের গ্রুপের নাম কী ছিল?",["Halal People","Friends Forever","SSC Squad"],0],
+ ["তোদের গল্পে Marufa কে ছিল?",["সেই সময়ের পরিচিত বন্ধু","শিক্ষক","কাজিন"],0],
+ ["তোরা কী শেয়ার করতে পছন্দ করিস?",["শুধু খবর","মিম আর রিল","শুধু নোট"],1],
+ ["তনুর জন্মদিন কোন মাসে?",["জানুয়ারি","মে","ডিসেম্বর"],1],
+ ["এই ওয়েবসাইটটা কীসের জন্য?",["পরীক্ষার রুটিন","বন্ধুত্বের স্মৃতি আর উপহার","অনলাইন দোকান"],1],
+ ["Message Jar-এ কী পাওয়া যায়?",["ছোট্ট মিষ্টি মেসেজ","পরীক্ষার নম্বর","আবহাওয়া"],0],
+ ["মন খারাপ হলে কী করা ভালো?",["সব লুকিয়ে রাখা","বিশ্বাসের কারও সঙ্গে কথা বলা","নিজেকে দোষ দেওয়া"],1],
+ ["বন্ধুত্বে কোনটা গুরুত্বপূর্ণ?",["চাপ দেওয়া","সম্মান আর বোঝাপড়া","সব সময় একমত হওয়া"],1],
+ ["তনুর জন্য চিঠিটা কে লিখেছে?",["Rafu","Marufa","Apon"],0],
+ ["১৫ সেকেন্ডের অ্যানিমেশনটি কী?",["হার্ট ভরার অ্যানিমেশন","রকেট","ঘড়ি"],0],
+ ["ছবির অ্যালবামে কী আছে?",["শুধু ফুল","Rafu, Tonu ও TikTok স্ক্রিনশট","শুধু বই"],1],
+ ["তনুর জন্য উপহারটা কেমন?",["স্মৃতিভরা ছোট্ট ওয়েবসাইট","গেমিং দোকান","ক্লাস নোট"],0],
+ ["তোর স্বপ্ন নিয়ে কী করা উচিত?",["গুরুত্ব দেওয়া","ভুলে যাওয়া","অন্যের সঙ্গে তুলনা করা"],0],
+ ["কোনটা স্বাস্থ্যকর বন্ধুত্বের অংশ?",["নিজের সীমা মানা","জোর করা","রাগ দেখিয়ে বাধ্য করা"],0],
+ ["তনুর পছন্দের গানের তালিকায় কোনটি আছে?",["Moho","Baby Shark","Jingle Bells"],0],
+ ["ওয়েবসাইটের গেটের প্রাথমিক পাসওয়ার্ড কী?",["Puchkii","Rafu123","Tonu2026"],0],
+ ["কুইজে মোট কয়টি প্রশ্ন আছে?",["১০টি","২০টি","৩০টি"],2],
+ ["সারপ্রাইজের মূল উদ্দেশ্য কী?",["চাপ তৈরি করা","স্মৃতি আর মায়া ভাগ করা","নম্বর দেওয়া"],1],
+ ["বন্ধু ব্যস্ত থাকলে কী করা যায়?",["বারবার চাপ দেওয়া","সময় ও স্পেসকে সম্মান করা","রাগ করে থাকা"],1],
+ ["একটি মজার স্মৃতি কী হতে পারে?",["মিম শেয়ার করে হাসা","শুধু ঝগড়া","পরীক্ষার খাতা"],0],
+ ["নিজের যত্নের মধ্যে কোনটি পড়ে?",["বিশ্রাম নেওয়া","নিজেকে অবহেলা করা","ঘুম বাদ দেওয়া"],0],
+ ["বন্ধুত্বের স্মৃতি কোথায় রাখা হয়েছে?",["এই ওয়েবসাইটে","ক্যালকুলেটরে","কোনো জায়গায় নয়"],0],
+ ["তনুর জন্য শেষ শুভকামনা কী?",["ভালো থাকুক আর স্বপ্ন পূরণ হোক","সব সময় ব্যস্ত থাকুক","কখনো বিশ্রাম না নিক"],0]
+];
+document.getElementById("quizQuestions").innerHTML = quizData.map((q,i) => `<div class="question"><p>${i+1}. ${q[0]} 💗</p>${q[1].map((opt,j)=>`<label><input type="radio" name="q${i+1}" value="${j}" required> ${opt}</label>`).join("")}</div>`).join("");
+document.getElementById("quizForm").addEventListener("submit", e => {
+  e.preventDefault(); let score=0;
+  quizData.forEach((q,i)=>{const picked=document.querySelector(`input[name="q${i+1}"]:checked`); if(picked && Number(picked.value)===q[2]) score++;});
+  document.getElementById("quizResult").textContent = `তোর স্কোর ${score}/30 🥹💗 ${score>=25 ? "ওয়াও! তুই তো আমাদের গল্প দারুণ মনে রেখেছিস! 🫶✨" : score>=15 ? "ভালোই করেছিস! আরেকবার চেষ্টা করবি? 🌷" : "চিন্তা নেই—আবার খেল, মজাটাই আসল! 💌"}`;
+  document.getElementById("quizPrize").classList.toggle("hidden", score < 25);
+});
+
+const funnyLines = [
+  "আমরা সিরিয়াস কথা বলতে গিয়ে আবার মিমে চলে যাই 😭",
+  "একটা রিল পাঠিয়ে বলা: ‘এইটা একদম তুই!’ 😂",
+  "Sad mood-এ ঢুকে Funny Corner-এ এসে হাসতে শুরু! 🤭",
+  "আমাদের কম্বাইন্ড অ্যাকাউন্টের প্রতিটা পোস্ট একটা নতুন স্মৃতি। 💗"
+];
+document.getElementById("newFunny").addEventListener("click", () => {
+  const el = document.getElementById("funnyLine");
+  let n = Math.floor(Math.random()*funnyLines.length);
+  el.textContent = funnyLines[n];
+});
+
+document.querySelectorAll("[data-gift]").forEach(b => b.addEventListener("click", () => {
+  document.getElementById("giftMessage").textContent = b.dataset.gift;
+}));
+
+document.getElementById("showWish").addEventListener("click", () => {
+  const value = document.getElementById("wishInput").value.trim();
+  document.getElementById("wishOutput").textContent = value ? `তোর ইচ্ছা: ${value}` : "আগে একটা ইচ্ছা লিখে নে 💗";
+});
+
+document.getElementById("finalSurprise").addEventListener("click", () => {
+  document.getElementById("finalReveal").classList.remove("hidden");
+  document.getElementById("finalSurprise").classList.add("hidden");
+});
+
+let heartTimer = null;
+document.getElementById("startHeart").addEventListener("click", () => {
+  const heart = document.getElementById("bigHeart");
+  const text = document.getElementById("heartText");
+  heart.classList.remove("filling");
+  void heart.offsetWidth;
+  heart.classList.add("filling");
+  text.textContent = "একটু অপেক্ষা কর... 💗";
+  if (heartTimer) clearTimeout(heartTimer);
+  heartTimer = setTimeout(() => {
+    text.textContent = "এই ছোট্ট হার্টটা তোর জন্য, পুচকি! 🫶";
+    heart.classList.remove("filling");
+    heart.textContent = "♥";
+  }, 15000);
+  heart.textContent = "♡";
+});
+
+function updateCountdown() {
+  const now = new Date();
+  let year = now.getFullYear();
+  let birthday = new Date(year, 4, 28, 0, 0, 0);
+  if (birthday.getTime() < now.getTime()) birthday = new Date(year+1, 4, 28, 0, 0, 0);
+  const diff = birthday - now;
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  document.getElementById("countdown").textContent = `${days} দিন ${hours} ঘণ্টা ${mins} মিনিট`;
+}
+updateCountdown();
+setInterval(updateCountdown, 60000);
